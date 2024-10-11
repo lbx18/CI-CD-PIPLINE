@@ -11,12 +11,11 @@ jobs:
          npm install dotenv
          npm run dev
   security:  
-      runs-on: ubuntu-latest
-      steps: 
-        - uses: actions/checkout@master
-        - uses: snyk/actions/node@master
-      env:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@master
+     - uses: snyk/actions/node@master
+       env:
          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      #- name: Run Snyk to check for vulnerabilities
-    
-     
+       with:
+        command: code test
