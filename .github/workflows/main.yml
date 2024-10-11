@@ -5,7 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: build 
       - run: |
          cd  CI-CD-PIPLINE/T-WEB-700-COT_3-main/api/
          npm install dotenv
