@@ -5,9 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: ls -R
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: build 
+      - run: |
+         cd  CI-CD-PIPLINE/T-WEB-700-COT_3-main/api/
+         npm install dotenv
+         npm i
+         npm run dev
+      
+      #- name: Run Snyk to check for vulnerabilities
+       # uses: snyk/actions/node@master
+        # env:
+        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
      
