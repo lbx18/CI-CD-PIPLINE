@@ -6,10 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-         ls -R
          cd T-WEB-700-COT_3-main/api/
          npm install dotenv
-         npm run dev
   security:  
     runs-on: ubuntu-latest
     steps:
