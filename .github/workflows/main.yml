@@ -1,13 +1,30 @@
 name: Example workflow for Node using Snyk
 on: push
 jobs:
-  security:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: ls -R
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-     
+      - run: |
+         cd T-WEB-700-COT_3-main/
+         cd api
+         npm install dotenv
+         npm audit
+
+         
+         cd ../front-office/money-count
+         npm install dotenv
+         npm audit
+      
+
+         
+  security:  
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@master
+     - uses: snyk/actions/node@master
+       env:
+         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+       with:
+        command: code test
+        sarif_file: snyk.sarif
