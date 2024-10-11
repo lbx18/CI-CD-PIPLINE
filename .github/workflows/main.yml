@@ -6,7 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: |
-         cd  CI-CD-PIPLINE/T-WEB-700-COT_3-main/api/
+         ls -R
+         cd T-WEB-700-COT_3-main/api/
          npm install dotenv
     
       
