@@ -10,4 +10,4 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Run Snyk test
-        run: snyk test --file=/lbx18/T-WEB-700-COT_3-main/tree/main/api
+        run: snyk test --file=/lbx18/CI-CD-PIPLINE/tree/main/T-WEB-700-COT_3-main/api
