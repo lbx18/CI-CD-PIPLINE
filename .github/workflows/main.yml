@@ -27,3 +27,4 @@ jobs:
          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
        with:
         command: code test
+        sarif_file: snyk.sarif
