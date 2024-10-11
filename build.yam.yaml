@@ -1,0 +1,21 @@
+name: Example workflow for Node using Snyk
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: |
+         ls -R
+         cd T-WEB-700-COT_3-main/api/
+         npm install dotenv
+         npm run dev
+  security:  
+      run-on: ubuntu-latest
+      step: 
+        - uses: actions/checkout@master
+        - uses: snyk/actions/node@master
+      env:
+         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        command: code test
