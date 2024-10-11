@@ -9,8 +9,7 @@ jobs:
       - run: |
          cd  CI-CD-PIPLINE/T-WEB-700-COT_3-main/api/
          npm install dotenv
-         npm i
-         npm run dev
+    
       
       #- name: Run Snyk to check for vulnerabilities
        # uses: snyk/actions/node@master
