@@ -9,7 +9,7 @@ jobs:
          ls -R
          cd T-WEB-700-COT_3-main/api/
          npm install dotenv
-    
+         npm run dev
       
       #- name: Run Snyk to check for vulnerabilities
        # uses: snyk/actions/node@master
