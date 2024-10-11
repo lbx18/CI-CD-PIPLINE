@@ -10,7 +10,7 @@ jobs:
          cd api
          npm install dotenv
          npm audit
-         npm audit fix
+
          
          cd ../front-office/money-count
          npm install dotenv
