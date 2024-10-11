@@ -8,11 +8,11 @@ jobs:
       - run: |
          cd T-WEB-700-COT_3-main/
          cd api
+         npm install dotenv
          npm run dev
-         cd ../front-office/money-count         
+         cd ../front-office/money-count
+         npm install dotenv
          npm run dev
-      
-
          
   security:  
     runs-on: ubuntu-latest
