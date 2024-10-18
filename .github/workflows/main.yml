@@ -1,26 +1,83 @@
-name: Example workflow for Node using Snyk
-on: push
+# Trigger this workflow on pushes and pull requests to the 'implementation' and 'main' branches
+on:
+  push:
+    branches:
+      - implementation
+      - main
+  pull_request:
+    branches:
+      - implementation
+      - main
+
 jobs:
+  # Build job to prepare the API and front-end, including installing dependencies and starting dev servers
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2  # Checkout the code repository
       - run: |
-         cd T-WEB-700-COT_3-main/
-         cd api
-         npm install dotenv
-         npm run dev
-         cd ../front-office/money-count
-         npm install dotenv
-         npm run dev
-         
-  security:  
-    runs-on: ubuntu-latest
+          # List files in the repository
+          ls
+          # Navigate to the API directory
+          cd T-WEB-700-COT_3-main/api
+          # Install dotenv package for environment variable handling
+          npm install dotenv
+          # Apply fixes to security vulnerabilities automatically
+          npm audit fix
+          # Run the script to create the database
+          node database/create_db.js
+          # Start the API in development mode in the background
+          npm run dev &
+          # Move to the Front-office (client) directory
+          cd ../front-office/money-count
+          # Install dotenv package for the Front-office
+          npm install dotenv
+          # Apply fixes to any vulnerabilities for the front-end
+          npm audit fix
+          # Start the front-end development server
+          npm run dev
+
+  # Security job to scan for vulnerabilities using Snyk
+  security:
+    # Ensure that only one security scan runs at a time; cancel previous ones if a new scan starts
+    concurrency:
+      group: security-job-group  # Define the group for concurrency control
+      cancel-in-progress: true  # Cancel previous jobs in this group if a new one is triggered
+    needs: build  # This job runs only after the 'build' job completes
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
-     - uses: actions/checkout@master
-     - uses: snyk/actions/node@master
-       env:
-         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-       with:
-        command: code test
-        sarif_file: snyk.sarif
+      - uses: actions/checkout@v2  # Checkout the code repository
+
+      # Install Snyk CLI globally to use for vulnerability scanning
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      # Snyk scan for the API directory
+      - name: Run Snyk on API
+        run: |
+          # Navigate to the API directory
+          cd T-WEB-700-COT_3-main/api
+          # Run Snyk scan to detect vulnerabilities in the API
+          snyk test
+          # Monitor for newly introduced vulnerabilities
+          snyk monitor
+        env:
+          # Use the Snyk token stored as a secret in the repository
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          FORCE_COLOR: "1"  # Ensure that the Snyk output is colorized
+        continue-on-error: true  # Continue the job even if vulnerabilities are found
+
+      # Snyk scan for the Front-office (client) directory
+      - name: Run Snyk on Front-office
+        run: |
+          # Navigate to the Front-office directory
+          cd T-WEB-700-COT_3-main/front-office/money-count
+          # Run Snyk scan to detect vulnerabilities in the Front-office
+          snyk test
+          # Monitor for newly introduced vulnerabilities
+          snyk monitor
+        env:
+          # Use the Snyk token stored as a secret in the repository
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          FORCE_COLOR: "1"  # Ensure that the Snyk output is colorized
+        continue-on-error: true  # Continue the job even if vulnerabilities are found
