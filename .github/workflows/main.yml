@@ -43,7 +43,7 @@ jobs:
     concurrency:
       group: security-job-group  # Define the group for concurrency control
       cancel-in-progress: true  # Cancel previous jobs in this group if a new one is triggered
-    needs: build  # This job runs only after the 'build' job completes
+  #  needs: build  # This job runs only after the 'build' job completes
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
       - uses: actions/checkout@v2  # Checkout the code repository
